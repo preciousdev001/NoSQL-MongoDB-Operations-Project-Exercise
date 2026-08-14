@@ -1,2 +1,2 @@
-node-mongoose/
-    .env
+node_module/
+.env
