@@ -31,11 +31,19 @@ const runDatabaseQueries = async () => {
   //   console.log("1. Christopher Nolan Movies:", nolanMovies);
 
   // number 2 Find movies that include the genre "Action" and sort (descending) them by year.
-  const actionMoviesByYear = await movies
-    .find({ genres: "Action" })
-    .sort({ year: -1 })
+  //   const actionMoviesByYear = await movies
+  //     .find({ genres: "Action" })
+  //     .sort({ year: -1 })
+  //     .toArray();
+  //   console.log("2. Action Movies (Sorted By Year Desc)", actionMoviesByYear);
+
+  // number 3 Find movies with an IMDb rating greater than 8 and return only the title and IMDB information.
+
+  const topRated = await movies
+    .find({ "imdb.rating": { $gt: 8 } })
+    .project({ title: 1, imdb: 1, _id: 0 })
     .toArray();
-  console.log("2. Action Movies (Sorted By Year Desc)", actionMoviesByYear);
+  console.log("3. Top Rated Movies:", topRated);
 
   process.exit(0);
 };
