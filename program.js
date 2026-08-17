@@ -46,10 +46,26 @@ const runDatabaseQueries = async () => {
   //   console.log("3. Top Rated Movies:", topRated);
 
   // 4. Find movies that starred both "Tom Hanks" and "Tim Allen".
-  const hanksAndAllenMovies = await movies
-    .find({ cast: { $all: ["Tom Hanks", "Tim Allen"] } })
+  //   const hanksAndAllenMovies = await movies
+  //     .find({ cast: { $all: ["Tom Hanks", "Tim Allen"] } })
+  //     .toArray();
+  //   console.log("4. Movies with Tom Hanks and Tim Allen", hanksAndAllenMovies);
+
+  // 5. Find movies that starred both and only "Tom Hanks" and "Tim Allen".
+  const hanksAndAllenOnlyMovies = await movies
+    .find({
+      $or: [
+        {
+          cast: ["Tom Hanks", "Tim Allen"],
+          cast: ["Tim Allen", "Tom Hanks"],
+        },
+      ],
+    })
     .toArray();
-  console.log("4. Movies with Tom Hanks and Tim Allen", hanksAndAllenMovies);
+  console.log(
+    "5. Movies with ONLY Tom Hanks and Tim Allen",
+    hanksAndAllenOnlyMovies,
+  );
 
   process.exit(0);
 };
