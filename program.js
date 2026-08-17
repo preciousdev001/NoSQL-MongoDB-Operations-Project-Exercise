@@ -39,11 +39,17 @@ const runDatabaseQueries = async () => {
 
   // number 3 Find movies with an IMDb rating greater than 8 and return only the title and IMDB information.
 
-  const topRated = await movies
-    .find({ "imdb.rating": { $gt: 8 } })
-    .project({ title: 1, imdb: 1, _id: 0 })
+  //   const topRated = await movies
+  //     .find({ "imdb.rating": { $gt: 8 } })
+  //     .project({ title: 1, imdb: 1, _id: 0 })
+  //     .toArray();
+  //   console.log("3. Top Rated Movies:", topRated);
+
+  // 4. Find movies that starred both "Tom Hanks" and "Tim Allen".
+  const hanksAndAllenMovies = await movies
+    .find({ cast: { $all: ["Tom Hanks", "Tim Allen"] } })
     .toArray();
-  console.log("3. Top Rated Movies:", topRated);
+  console.log("4. Movies with Tom Hanks and Tim Allen", hanksAndAllenMovies);
 
   process.exit(0);
 };
