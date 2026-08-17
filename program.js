@@ -25,10 +25,17 @@ const runDatabaseQueries = async () => {
   //   console.log("New user created with ID", result.insertedId);
 
   //   number 1 find all movies directed by christopher nolan
-  const nolanMovies = await movies
-    .find({ directors: "Christopher Nolan" })
+  //   const nolanMovies = await movies
+  //     .find({ directors: "Christopher Nolan" })
+  //     .toArray();
+  //   console.log("1. Christopher Nolan Movies:", nolanMovies);
+
+  // number 2 Find movies that include the genre "Action" and sort (descending) them by year.
+  const actionMoviesByYear = await movies
+    .find({ genres: "Action" })
+    .sort({ year: -1 })
     .toArray();
-  console.log("1. Christopher Nolan Movies:", nolanMovies);
+  console.log("2. Action Movies (Sorted By Year Desc)", actionMoviesByYear);
 
   process.exit(0);
 };
