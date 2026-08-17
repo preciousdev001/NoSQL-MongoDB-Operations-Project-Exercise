@@ -66,6 +66,11 @@ const runDatabaseQueries = async () => {
   //     "5. Movies with ONLY Tom Hanks and Tim Allen",
   //     hanksAndAllenOnlyMovies,
   //   );
+  //   6. Find comedy movies that are directed by Steven Spielberg.
+  const spielbergComedies = await movies
+    .find({ directors: "Steven Spielberg", genres: "Comedy" })
+    .toArray();
+  console.log("6. Spielberg Comedy Movies:", spielbergComedies);
 
   process.exit(0);
 };
