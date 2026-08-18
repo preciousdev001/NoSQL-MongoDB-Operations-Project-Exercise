@@ -120,13 +120,33 @@ const runDatabaseQueries = async () => {
   //   }
   // 3. Delete all movies that do not have any genres.
 
-  const deleteNoGenreMoviesResult = await movies.deleteMany({
-    $or: [{ genres: { $exists: false } }, { genres: { $size: 0 } }],
-  });
-  console.log(
-    "3. Deleted Movies w/o Any Genres:",
-    deleteNoGenreMoviesResult.deletedCount,
-  );
+  //   const deleteNoGenreMoviesResult = await movies.deleteMany({
+  //     $or: [{ genres: { $exists: false } }, { genres: { $size: 0 } }],
+  //   });
+  //   console.log(
+  //     "3. Deleted Movies w/o Any Genres:",
+  //     deleteNoGenreMoviesResult.deletedCount,
+  //   );
+
+  // Aggregate section
+  // 1 Aggregate movies to count how many were released each year and display from the earliest year to the latest.
+
+  const moviesPerYear = await movies
+    .aggregate([
+      // group docs by year
+      {
+        $group: {
+          _id: "$year",
+          count: { $sum: 1 },
+        },
+      },
+      // sort by _id/year asc
+      {
+        $sort: { _id: 1 },
+      },
+    ])
+    .toArray();
+  console.log("1. Movies per year (earliest to latest):", moviesPerYear);
 
   process.exit(0);
 };
