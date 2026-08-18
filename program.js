@@ -80,7 +80,18 @@ const runDatabaseQueries = async () => {
   //   );
 
   // 2. Increment the metacritic of "The Matrix" by 1.
-  await movies.updateOne({ title: "The Matrix" }, { $inc: { metacritic: 1 } });
+  //   await movies.updateOne({ title: "The Matrix" }, { $inc: { metacritic: 1 } });
+
+  // 3. Add a new genre "Gen Z" to all movies released in the year 1997.
+  //   await movies.updateMany({ year: 1997 }, { $addToSet: { genres: "Gen Z" } });
+
+  //   4. Increase IMDb rating by 1 for all movies with a rating less than 5.
+  await movies.updateMany(
+    { "imdb.rating": { $lt: 5 } },
+    { $inc: { "imdb.rating": 1 } },
+  );
+
+  console.log("all updates complete!");
 
   process.exit(0);
 };
