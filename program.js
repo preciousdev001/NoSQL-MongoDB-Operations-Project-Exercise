@@ -131,22 +131,45 @@ const runDatabaseQueries = async () => {
   // Aggregate section
   // 1 Aggregate movies to count how many were released each year and display from the earliest year to the latest.
 
-  const moviesPerYear = await movies
+  //   const moviesPerYear = await movies
+  //     .aggregate([
+  //       // group docs by year
+  //       {
+  //         $group: {
+  //           _id: "$year",
+  //           count: { $sum: 1 },
+  //         },
+  //       },
+  //       // sort by _id/year asc
+  //       {
+  //         $sort: { _id: 1 },
+  //       },
+  //     ])
+  //     .toArray();
+  //   console.log("1. Movies per year (earliest to latest):", moviesPerYear);
+
+  // 2. Calculate the average IMDb rating for movies
+  // grouped by director and display from highest to lowest.
+
+  const avgRatingByDirector = await movies
     .aggregate([
-      // group docs by year
+      // unwind - ea director gets own array
+      { $unwind: "$directors" },
+      // group director and calc avg
       {
         $group: {
-          _id: "$year",
-          count: { $sum: 1 },
+          _id: "directors",
+          avgRating: { $avg: "$imdb.rating" },
         },
       },
-      // sort by _id/year asc
       {
-        $sort: { _id: 1 },
+        // sort by avg rating desc
+        $sort: { avgRating: -1 },
       },
     ])
     .toArray();
-  console.log("1. Movies per year (earliest to latest):", moviesPerYear);
+
+  console.log("2. Average IMDb rating by director:", avgRatingByDirector);
 
   process.exit(0);
 };
