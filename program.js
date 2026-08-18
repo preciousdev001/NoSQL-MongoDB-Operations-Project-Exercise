@@ -67,10 +67,18 @@ const runDatabaseQueries = async () => {
   //     hanksAndAllenOnlyMovies,
   //   );
   //   6. Find comedy movies that are directed by Steven Spielberg.
-  const spielbergComedies = await movies
-    .find({ directors: "Steven Spielberg", genres: "Comedy" })
-    .toArray();
-  console.log("6. Spielberg Comedy Movies:", spielbergComedies);
+  //   const spielbergComedies = await movies
+  //     .find({ directors: "Steven Spielberg", genres: "Comedy" })
+  //     .toArray();
+  //   console.log("6. Spielberg Comedy Movies:", spielbergComedies);
+
+  // update portion now
+  // 1. Add a new field "available_on" with the value "Sflix" to "The Matrix". don't need a new variable since were just making changes in db
+
+  await movies.updateOne(
+    { title: "The Matrix" },
+    { $set: { available_on: "Sflix" } },
+  );
 
   process.exit(0);
 };
