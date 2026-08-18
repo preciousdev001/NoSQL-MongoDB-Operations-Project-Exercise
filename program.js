@@ -106,18 +106,27 @@ const runDatabaseQueries = async () => {
   //     deleteSingleCommentResult.deletedCount,
   //   );
 
-  // 2. delete all comments made for "The Matrix".
-  const matrixMovie = await movies.findOne({ title: "The Matrix" });
+  //   // 2. delete all comments made for "The Matrix".
+  //   const matrixMovie = await movies.findOne({ title: "The Matrix" });
 
-  if (matrixMovie) {
-    const deleteMatrixCommentsResult = await comments.deleteMany({
-      movie_id: matrixMovie._id,
-    });
-    console.log(
-      "2. Deleted Matrix comments count:",
-      deleteMatrixCommentsResult.deletedCount,
-    );
-  }
+  //   if (matrixMovie) {
+  //     const deleteMatrixCommentsResult = await comments.deleteMany({
+  //       movie_id: matrixMovie._id,
+  //     });
+  //     console.log(
+  //       "2. Deleted Matrix comments count:",
+  //       deleteMatrixCommentsResult.deletedCount,
+  //     );
+  //   }
+  // 3. Delete all movies that do not have any genres.
+
+  const deleteNoGenreMoviesResult = await movies.deleteMany({
+    $or: [{ genres: { $exists: false } }, { genres: { $size: 0 } }],
+  });
+  console.log(
+    "3. Deleted Movies w/o Any Genres:",
+    deleteNoGenreMoviesResult.deletedCount,
+  );
 
   process.exit(0);
 };
