@@ -1,8 +1,10 @@
+const { ObjectId } = require("mongodb");
 const connect = require("./db");
 
 const runDatabaseQueries = async () => {
   const db = await connect();
   const movies = db.collection("movies");
+  const comments = db.collection("comments");
 
   //   const users = db.collection("users");
 
@@ -86,12 +88,36 @@ const runDatabaseQueries = async () => {
   //   await movies.updateMany({ year: 1997 }, { $addToSet: { genres: "Gen Z" } });
 
   //   4. Increase IMDb rating by 1 for all movies with a rating less than 5.
-  await movies.updateMany(
-    { "imdb.rating": { $lt: 5 } },
-    { $inc: { "imdb.rating": 1 } },
-  );
+  //   await movies.updateMany(
+  //     { "imdb.rating": { $lt: 5 } },
+  //     { $inc: { "imdb.rating": 1 } },
+  //   );
 
-  console.log("all updates complete!");
+  //   console.log("all updates complete!");
+
+  // all delete portions will be here
+  //   1. Delete a comment with a specific ID.
+  //   const targetId = "5a9427648b0beebeb69579e7";
+  //   const deleteSingleCommentResult = await comments.deleteOne({
+  //     _id: new ObjectId(targetId),
+  //   });
+  //   console.log(
+  //     "1. delete single comment",
+  //     deleteSingleCommentResult.deletedCount,
+  //   );
+
+  // 2. delete all comments made for "The Matrix".
+  const matrixMovie = await movies.findOne({ title: "The Matrix" });
+
+  if (matrixMovie) {
+    const deleteMatrixCommentsResult = await comments.deleteMany({
+      movie_id: matrixMovie._id,
+    });
+    console.log(
+      "2. Deleted Matrix comments count:",
+      deleteMatrixCommentsResult.deletedCount,
+    );
+  }
 
   process.exit(0);
 };
