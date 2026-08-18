@@ -74,11 +74,13 @@ const runDatabaseQueries = async () => {
 
   // update portion now
   // 1. Add a new field "available_on" with the value "Sflix" to "The Matrix". don't need a new variable since were just making changes in db
+  //   await movies.updateOne(
+  //     { title: "The Matrix" },
+  //     { $set: { available_on: "Sflix" } },
+  //   );
 
-  await movies.updateOne(
-    { title: "The Matrix" },
-    { $set: { available_on: "Sflix" } },
-  );
+  // 2. Increment the metacritic of "The Matrix" by 1.
+  await movies.updateOne({ title: "The Matrix" }, { $inc: { metacritic: 1 } });
 
   process.exit(0);
 };
